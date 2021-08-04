@@ -1,24 +1,42 @@
+var mouseEvent = "empty";
+var lpx , lpy;
+
 var canvas = document.getElementById("myCanvas");
 ctx = canvas.getContext('2d');
 var color = "blue";
 var width = 3;
 
-ctx.beginPath();
-ctx.strokeStyle = color;
-ctx.lineWidth = width;
-ctx.arc(200, 200, 50, 0, 2*Math.PI);
-ctx.stroke();
-
-canvas.addEventListener("mousedown", my_mousedown);
-function my_mousedown (e) {
-    mousex = e.clientX-canvas.offsetLeft;
-    mousey = e.clientY-canvas.offsetTop;
-    circle(mousex,mousey);
+canvas.addEventListener("mouseup", my_mouseup);
+function my_mouseup(e)
+{
+mouseEvent= "mouseUp";
 }
-function circle (mousex,mousey) {
+canvas.addEventListener("mousedown", my_mousedown);
+function my_mousedown (e)
+{
+    mouseEvent= "mouseDown";
+}
+canvas.addEventListener("mouseleave", my_mouseleave);
+function my_mouseleave (e)
+{
+    mouseEvent= "mouseLeave";
+}
+canvas.addEventListener("mousemove", my_mousemove);
+function my_mousemove (e)
+{
+    cpx = e.clientX- canvas.offsetLeft;
+    cpy = e.clientY- canvas.offsetTop;
+
+    if (mouseEvent == "mouseDown")
+{
     ctx.beginPath();
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
-    ctx.arc(mousex, mousey, 50, 0, 2*Math.PI);
+    ctx.moveTo (lpx, lpy);
+    ctx.lineTo (cpx, cpy);
     ctx.stroke();
-}   
+
+}
+lpx = cpx;
+lpy = cpy;
+}
